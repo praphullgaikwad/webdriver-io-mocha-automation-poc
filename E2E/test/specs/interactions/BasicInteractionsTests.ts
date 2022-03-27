@@ -1,5 +1,10 @@
 import { expect as chaiExpect } from "chai";
 
+import inputPage from "../../../pages/InputPage";
+// import checkboxPage from "../../../pages/CheckboxesPage";
+// import dropdownPage from "../../../pages/DropdownPage";
+// import framesPage from "../../../pages/FramesPage";
+
 describe("Performing various basic web interactions", () => {
     it("TC_BINT_001 - Verify user is able to type into Input box.", async () => {
         /**
@@ -11,8 +16,19 @@ describe("Performing various basic web interactions", () => {
          *  4. Slow typing
          */
         await browser.url("/inputs");
-        let ele = await $("[type=number]");
-        await ele.setValue("12345");
+
+        // 1. Type into input box
+        await inputPage.typeIntoNumberField("6666");
+
+        // 2. Clear the field and type or just add value
+        await inputPage.clearNumberField();
+        await inputPage.typeIntoNumberField("7777");
+
+        // 3. Click and type
+        await inputPage.clickAndType("8888");
+
+        // 4. Slow typing
+        await inputPage.typeIntoNumberField("9999", 200);
     });
 
     it("TC_BINT_002 - Verify user is able to select a dropdown list option", async () => {
@@ -85,21 +101,5 @@ describe("Performing various basic web interactions", () => {
         await browser.keys("Delete");
         await editorElement.setValue("Handling Key Press...");
         await browser.switchToParentFrame();
-    });
-
-    it("TC_BINT_010 - Verify user is able to scroll the page..", async () => {
-        /**
-         * Basic scrolling
-         * Methods used:
-         * 1. scrollIntoView()
-         */
-
-        await browser.url("https://amazon.com/");
-        //  If you want to see element at top
-        await (await $("span=Top Sellers in Books for you")).scrollIntoView();
-        //  If you want to see element at bottom
-        await (
-            await $("span=Top Sellers in Books for you")
-        ).scrollIntoView(false);
     });
 });

@@ -37,8 +37,13 @@ export default class BasePage {
             throw Error(ele.error.message);
         }
         if (!delay) {
-            await ele.addValue(text);
+            await ele.setValue(text);
         } else {
+            // Clear field
+            await this.click(await ele);
+            await browser.keys(["Meta", "A"]);
+            await browser.keys("Delete");
+            // Type with delay
             for (let i = 0; i < text.length; i++) {
                 await ele.addValue(text[i]);
                 await browser.pause(delay);
