@@ -1,9 +1,38 @@
-exports.config = {
+// @ts-nocheck
+export const config: WebdriverIO.Config = {
     //
     // ====================
     // Runner Configuration
     // ====================
     //
+    //
+    // =====================
+    // ts-node Configurations
+    // =====================
+    //
+    // You can write tests using TypeScript to get autocompletion and type safety.
+    // You will need typescript and ts-node installed as devDependencies.
+    // WebdriverIO will automatically detect if these dependencies are installed
+    // and will compile your config and tests for you.
+    // If you need to configure how ts-node runs please use the
+    // environment variables for ts-node or use wdio config's autoCompileOpts section.
+    //
+    currentDt: new Date(),
+    //
+    autoCompileOpts: {
+        autoCompile: true,
+        // see https://github.com/TypeStrong/ts-node#cli-and-programmatic-options
+        // for all available options
+        tsNodeOpts: {
+            transpileOnly: true,
+            project: "tsconfig.json",
+        },
+        // tsconfig-paths is only used if "tsConfigPathsOpts" are provided, if you
+        // do please make sure "tsconfig-paths" is installed as dependency
+        // tsConfigPathsOpts: {
+        //     baseUrl: './'
+        // }
+    },
     //
     // ==================
     // Specify Test Files
@@ -20,7 +49,7 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-    specs: ["./test/specs/**/*.js"],
+    specs: ["./test/specs/**/*.ts"],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -139,7 +168,6 @@ exports.config = {
     mochaOpts: {
         ui: "bdd",
         timeout: 60000,
-        require: ["@babel/register"],
     },
     //
     // =====
@@ -193,7 +221,7 @@ exports.config = {
      * @param {Array.<String>} specs        List of spec file paths that are to be run
      * @param {Object}         browser      instance of created browser/device session
      */
-    // before: function () {
+    // before: function (capabilities, specs) {
     // },
     /**
      * Runs before a WebdriverIO command gets executed.
