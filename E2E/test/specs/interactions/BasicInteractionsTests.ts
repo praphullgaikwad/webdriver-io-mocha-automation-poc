@@ -1,9 +1,9 @@
 import { expect as chaiExpect } from "chai";
 
 import inputPage from "../../../pages/InputPage";
-// import checkboxPage from "../../../pages/CheckboxesPage";
-// import dropdownPage from "../../../pages/DropdownPage";
-// import framesPage from "../../../pages/FramesPage";
+import dropdownPage from "../../../pages/DropdownPage";
+import checkboxPage from "../../../pages/CheckboxesPage";
+import iFramesPage from "../../../pages/IFramesPage";
 
 describe("Performing various basic web interactions", () => {
     it("TC_BINT_001 - Verify user is able to type into Input box.", async () => {
@@ -36,52 +36,54 @@ describe("Performing various basic web interactions", () => {
          * Dropdown
          * Actions:
          * 1. Assert default option is selected
-         * 2. Select by attribute, text, index
-         * 3. Get a list of options
+         * 2. Select by visible text
+         * 3. Select by attribute
+         * 4. Select by index
          */
+
+        await dropdownPage.navigateTo("/dropdown");
+
         // Assert default option is selected
-        await browser.url("/dropdown");
-        let selectedElement = await $("//select/option[@selected='selected']");
-        let val = await selectedElement.getText();
-        chaiExpect(val).to.equal("Please select an option");
+        await dropdownPage.verifySelectedDropOption("Please select an option");
 
-        // Select by attribute, text, index
-        let dropdownElement = await $("#dropdown");
-        dropdownElement.selectByVisibleText("Option 2");
-        dropdownElement.selectByAttribute("value", "1");
-        dropdownElement.selectByIndex(2);
+        // Select by visible text
+        await dropdownPage.dropdown.selectByVisibleText("Option 2");
 
-        // Get a list of options
-        await (await selectedElement.parentElement()).click();
-        let listOptionsArr = await $$("select > option");
-        let arr = [];
-        for (let i = 0; i < listOptionsArr.length; i++) {
-            console.log(
-                "dropdown option " +
-                    i +
-                    "= " +
-                    (await listOptionsArr[i].getText())
-            );
-            arr.push(await listOptionsArr[i].getText());
-        }
+        // Select by attribute
+        await dropdownPage.dropdown.selectByAttribute("value", "1");
+
+        // Select by index
+        await dropdownPage.dropdown.selectByIndex(2);
     });
 
     it("TC_BINT_003 - Verify user is able to tick/select a checkbox.", async () => {
         /**
          * Checkbox
          * Actions:
-         * 1. Select an option
-         * 2. Unselect an option (if selected)
-         * 4. Assert if option is selected
-         * 5. Select all options
+         * 1. Select an checkbox
+         * 2. Unselect an checkbox (if selected)
+         * 4. Assert if checkbox is selected
+         * 5. Select all checkbox and verify
          */
-        await browser.url("/checkboxes");
-        let checkboxElement = await $('//form[@id="checkboxes"]/input[1]');
-        if (!(await checkboxElement.isSelected())) {
-            await checkboxElement.click();
-        }
-        let isChecked = await checkboxElement.isSelected();
-        chaiExpect(isChecked).to.be.true;
+        await checkboxPage.navigateTo("/checkboxes");
+
+        // 1. Select an checkbox
+        await checkboxPage.clickCheckBox(0);
+        await checkboxPage.verifyCheckBoxSelected(0);
+
+        // Unselect an checkbox (if selected)
+        await checkboxPage.clickCheckBoxForce(1);
+        await checkboxPage.clickCheckBox(1);
+
+        // 4. Assert checkbox is not selected
+        await checkboxPage.verifyCheckBoxSelected(1, false);
+
+        // 5. Select all checkbox and verify
+        await checkboxPage.clickCheckBoxForce(0);
+        await checkboxPage.verifyCheckBoxSelected(0);
+
+        await checkboxPage.clickCheckBoxForce(1);
+        await checkboxPage.verifyCheckBoxSelected(1);
     });
 
     it("TC_BINT_009 - Verify user is able to perform key press in editor.", async () => {
@@ -89,17 +91,23 @@ describe("Performing various basic web interactions", () => {
          * Key press
          *
          */
-        await browser.url("/frames");
-        await (await $("=iFrame")).click();
-        let eleFrame = await $("#mce_0_ifr");
-        await browser.switchToFrame(eleFrame);
-        let editorElement = await $("#tinymce");
-        await editorElement.click();
+        await iFramesPage.navigateTo("/frames");
 
-        // Key Press
+        // Click iFrame
+        await iFramesPage.clickIFrameType();
+
+        // Switch to iFrame
+        await iFramesPage.switchToIFrame();
+
+        // Click on iFrame editor
+        await iFramesPage.editorField.click();
+
+        // Perform a keypress operation inside the editor
         await browser.keys(["Meta", "A"]);
         await browser.keys("Delete");
-        await editorElement.setValue("Handling Key Press...");
+        await iFramesPage.typeIntoEditor("Handling Key Press...");
+
+        // Switch back to parent frame
         await browser.switchToParentFrame();
     });
 });
