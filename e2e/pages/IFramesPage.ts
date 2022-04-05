@@ -1,7 +1,7 @@
-import BasePage from "./BasePage";
-export const IFRAME_TYPE = "=iFrame";
-export const IFRAME = "#mce_0_ifr";
-export const EDITOR_FIELD = "#tinymce";
+import BasePage from './BasePage';
+export const IFRAME_TYPE = '=iFrame';
+export const IFRAME = '#mce_0_ifr';
+export const EDITOR_FIELD = '#tinymce';
 
 class IFramesPage extends BasePage {
     /**

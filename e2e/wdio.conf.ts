@@ -25,7 +25,7 @@ export const config: WebdriverIO.Config = {
         // for all available options
         tsNodeOpts: {
             transpileOnly: true,
-            project: "tsconfig.json",
+            project: 'tsconfig.json',
         },
         // tsconfig-paths is only used if "tsConfigPathsOpts" are provided, if you
         // do please make sure "tsconfig-paths" is installed as dependency
@@ -49,7 +49,7 @@ export const config: WebdriverIO.Config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-    specs: ["./test/specs/**/*.ts"],
+    specs: ['./test/specs/**/*.ts'],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -83,7 +83,7 @@ export const config: WebdriverIO.Config = {
             // 5 instances get started at a time.
             maxInstances: 3,
             //
-            browserName: "chrome",
+            browserName: 'firefox',
             acceptInsecureCerts: true,
             // If outputDir is provided WebdriverIO can capture driver session logs
             // it is possible to configure which logTypes to include/exclude.
@@ -98,7 +98,7 @@ export const config: WebdriverIO.Config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: "error",
+    logLevel: 'error',
     //
     // Set specific log levels per logger
     // loggers:
@@ -122,7 +122,7 @@ export const config: WebdriverIO.Config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: "https://the-internet.herokuapp.com",
+    baseUrl: 'https://the-internet.herokuapp.com',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -138,7 +138,7 @@ export const config: WebdriverIO.Config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ["selenium-standalone"],
+    services: ['selenium-standalone'],
 
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -146,7 +146,7 @@ export const config: WebdriverIO.Config = {
     //
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
-    framework: "mocha",
+    framework: 'mocha',
     //
     // The number of times to retry the entire specfile when it fails as a whole
     // specFileRetries: 1,
@@ -160,13 +160,13 @@ export const config: WebdriverIO.Config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ["spec", ["allure", { outputDir: "allure-results" }]],
+    reporters: ['spec', ['allure', { outputDir: 'allure-results' }]],
 
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
-        ui: "bdd",
+        ui: 'bdd',
         timeout: 60000,
     },
     //
@@ -242,7 +242,7 @@ export const config: WebdriverIO.Config = {
     beforeTest: async function () {
         await browser.maximizeWindow();
         await browser.setTimeout({ implicit: 15000, pageLoad: 10000 });
-        await browser.url("");
+        await browser.url('');
     },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
@@ -266,11 +266,7 @@ export const config: WebdriverIO.Config = {
      * @param {Boolean} result.passed    true if test has passed, otherwise false
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    afterTest: async function (
-        test,
-        context,
-        { error, result, duration, passed, retries }
-    ) {
+    afterTest: async function (test, context, { error, result, duration, passed, retries }) {
         if (!passed) {
             await browser.takeScreenshot();
         }

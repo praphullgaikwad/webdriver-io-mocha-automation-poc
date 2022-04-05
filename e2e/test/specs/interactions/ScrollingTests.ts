@@ -1,21 +1,21 @@
-describe("Web Interactions - Handling various scrolling methods", () => {
-    it("TC_BINT_010 - Verify user is able to scroll the page..", async () => {
+import scrollingPage from '../../../pages/ScollingPage';
+
+describe('Web Interactions - Handling various scrolling methods', () => {
+    it('TC_BINT_100 - Verify user is able to scroll the page..', async () => {
         /**
          * Basic scrolling
          * Methods used:
          * 1. scrollIntoView()
          */
 
-        await browser.url("https://amazon.com/");
+        await browser.url('https://amazon.com/');
         //  If you want to see element at top
-        await (await $("span=Top Sellers in Books for you")).scrollIntoView();
+        await (await scrollingPage.bookSection).scrollIntoView();
         //  If you want to see element at bottom
-        await (
-            await $("span=Top Sellers in Books for you")
-        ).scrollIntoView(false);
+        await (await scrollingPage.bookSection).scrollIntoView(false);
     });
 
-    it("TC_INT_100 -  Verify that user is able to scroll into visible portion..", async () => {
+    it('TC_INT_101 -  Verify that user is able to scroll into visible portion..', async () => {
         /**
          * Scrolling
          *
@@ -25,8 +25,9 @@ describe("Web Interactions - Handling various scrolling methods", () => {
          * Y -> [-]window.innerHeight
          */
 
+        await browser.url('https://amazon.com');
+
         // scrollDown
-        await browser.url("https://amazon.com");
         await browser.execute(() => {
             window.scrollBy(0, window.innerHeight);
         });
@@ -37,13 +38,15 @@ describe("Web Interactions - Handling various scrolling methods", () => {
         });
     });
 
-    it("TC_INT_101 - Verify that user is able to scroll into invisible portion.", async () => {
+    it('TC_INT_102 - Verify that user is able to scroll into invisible portion.', async () => {
         /**
          * Invisible Portion
          * Windows object:
          * 1. scrollTo
          *  document.body.scrollTop(scrollHeight)
          */
+
+        await browser.url('https://amazon.com');
 
         // Scroll down
         await browser.execute(() => {

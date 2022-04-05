@@ -1,4 +1,4 @@
-import chai from "chai";
+import chai from 'chai';
 
 export default class BasePage {
     constructor() {}
@@ -6,11 +6,10 @@ export default class BasePage {
     /** All reusable web functions */
 
     /**
-     * @param path : The web url which you want to visit.
+     * @param pageText : The web url which you want to visit.
      */
-    async navigateTo(path: string) {
-        await browser.maximizeWindow();
-        await browser.url(path);
+    async openPage(pageText: string) {
+        await (await $(`=${pageText}`)).click();
     }
 
     /**
